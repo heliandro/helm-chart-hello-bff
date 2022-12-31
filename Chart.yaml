@@ -1,0 +1,5 @@
+apiVersion: v2
+name: helm-chart-hello-bff
+description: A Helm chart for Kubernetes to deploy backend for frontend (BFF) application
+type: application
+version: 0.1.0
