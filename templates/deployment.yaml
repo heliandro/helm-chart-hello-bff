@@ -5,9 +5,6 @@ metadata:
   labels:
     app: {{ .Values.name }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       {{ include "module.selectorLabels" . | nindent 6 }}
@@ -23,7 +20,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Values.name }}
-          image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.version }}"
+          image: "{{ .Values.repository.owner }}/{{ .Values.repository.name }}:{{ .Values.repository.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -31,11 +28,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
+              path: /healthz
               port: http
           readinessProbe:
             httpGet:
-              path: /health
+              path: /healthz
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
